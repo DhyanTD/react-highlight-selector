@@ -71,6 +71,9 @@ export var Highlighter = function (_a) {
         addSelection(newSelection);
         onSelection && onSelection(newSelection);
     };
+    function manageCopy(selection) {
+        onCopy && onCopy(selection);
+    }
     useEffect(function () {
         var sortedSelections = sortByPositionAndOffset(selections);
         if (!rootRef.current)
@@ -89,10 +92,10 @@ export var Highlighter = function (_a) {
                     return;
                 var root = ReactDOM.createRoot(popoverRoot);
                 if (PopoverChildren) {
-                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: onCopy }));
+                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection); } }));
                 }
                 else {
-                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: onCopy }));
+                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection); } }));
                 }
             }
         }
