@@ -4,7 +4,7 @@ var tslib_1 = require("tslib");
 var jsx_runtime_1 = require("react/jsx-runtime");
 var constants_1 = require("../constants/constants");
 var DefaultPopover = function (_a) {
-    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection;
+    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, handleCopy = _a.handleCopy;
     var handleDelete = function () {
         removeSelection(selection);
     };
@@ -26,6 +26,7 @@ var DefaultPopover = function (_a) {
             display: 'flex',
             flexDirection: 'column',
             gap: '5px',
-        }, className: 'popover', children: [(0, jsx_runtime_1.jsxs)("p", { style: { fontSize: '12px' }, children: [selection.text.length, " characters selected"] }), (0, jsx_runtime_1.jsxs)("div", { style: { display: 'flex', minWidth: '150px', gap: '10px', justifyContent: 'center', alignItems: 'center' }, children: [(0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-red'); }, style: { backgroundColor: '#FF407D', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-yellow'); }, style: { backgroundColor: '#F5DD61', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-blue'); }, style: { backgroundColor: '#59D5E0', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsxs)("div", { onClick: handleDelete, style: { color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }, children: [' ', "\uD83D\uDDD1"] })] })] }));
+        }, className: 'popover', children: [(0, jsx_runtime_1.jsxs)("p", { style: { fontSize: '12px' }, children: [selection.text.length, " characters selected"] }), (0, jsx_runtime_1.jsxs)("div", { style: { display: 'flex', minWidth: '150px', gap: '10px', justifyContent: 'center', alignItems: 'center' }, children: [(0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-red'); }, style: { backgroundColor: '#FF407D', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-yellow'); }, style: { backgroundColor: '#F5DD61', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsx)("div", { onClick: function () { return changeColor('bg-blue'); }, style: { backgroundColor: '#59D5E0', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), (0, jsx_runtime_1.jsxs)("div", { onClick: handleDelete, style: { color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }, children: [' ', "\uD83D\uDDD1"] }), handleCopy &&
+                        (0, jsx_runtime_1.jsxs)("div", { onClick: function () { return handleCopy; }, style: { color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }, children: [' ', "\uD83D\uDDD1"] })] })] }));
 };
 exports.default = DefaultPopover;

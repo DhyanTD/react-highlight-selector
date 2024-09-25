@@ -57,9 +57,9 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
           &#x1F5D1;
         </div>
       {handleCopy &&
-        <div onClick={()=>handleCopy} style={{ color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }}>
+        <div onClick={()=>handleCopy} style={{ color: 'white', cursor: 'pointer', fontSize: 16, }}>
           {' '}
-          &#x1F5D1;
+          copy
         </div>
         }
       </div>
