@@ -5,7 +5,7 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
   const handleDelete = () => {
     removeSelection(selection)
   }
-  
+
   const changeColor = (colorClassName: string) => {
     const classes = selection.className || defaultSelectionWrapperClassName
     const classArr = classes.split(' ')
@@ -56,6 +56,12 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
           {' '}
           &#x1F5D1;
         </div>
+      {handleCopy &&
+        <div onClick={()=>handleCopy} style={{ color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }}>
+          {' '}
+          &#x1F5D1;
+        </div>
+        }
       </div>
     </div>
   )

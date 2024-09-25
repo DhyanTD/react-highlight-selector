@@ -2,7 +2,7 @@ import { __assign } from "tslib";
 import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
 import { defaultSelectionWrapperClassName } from '../constants/constants';
 var DefaultPopover = function (_a) {
-    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection;
+    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, handleCopy = _a.handleCopy;
     var handleDelete = function () {
         removeSelection(selection);
     };
