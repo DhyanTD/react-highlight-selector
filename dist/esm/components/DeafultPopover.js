@@ -25,6 +25,6 @@ var DefaultPopover = function (_a) {
             flexDirection: 'column',
             gap: '5px',
         }, className: 'popover', children: [_jsxs("p", { style: { fontSize: '12px' }, children: [selection.text.length, " characters selected"] }), _jsxs("div", { style: { display: 'flex', minWidth: '150px', gap: '10px', justifyContent: 'center', alignItems: 'center' }, children: [_jsx("div", { onClick: function () { return changeColor('bg-red'); }, style: { backgroundColor: '#FF407D', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-yellow'); }, style: { backgroundColor: '#F5DD61', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-blue'); }, style: { backgroundColor: '#59D5E0', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }, children: ' ' }), _jsxs("div", { onClick: handleDelete, style: { color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }, children: [' ', "\uD83D\uDDD1"] }), handleCopy &&
-                        _jsxs("div", { onClick: function () { return handleCopy; }, style: { color: 'white', cursor: 'pointer', fontSize: 16, }, children: [' ', "copy"] })] })] }));
+                        _jsxs("div", { onClick: function () { return handleCopy(selection); }, style: { color: 'white', cursor: 'pointer', fontSize: 16, }, children: [' ', "copy"] })] })] }));
 };
 export default DefaultPopover;

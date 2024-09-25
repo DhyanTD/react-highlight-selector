@@ -106,6 +106,10 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     onSelection && onSelection(newSelection)
   }
 
+  function manageCopy(selection: SelectionType) {
+    onCopy && onCopy(selection)
+  }
+
   useEffect(() => {
     const sortedSelections = sortByPositionAndOffset(selections)
     if (!rootRef.current) return
@@ -125,11 +129,11 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
         if (PopoverChildren) {
           root.render(
-            <PopoverChildren selection={item} removeSelection={removeSelection} updateSelection={updateSelection} handleCopy={onCopy} />,
+            <PopoverChildren selection={item} removeSelection={removeSelection} updateSelection={updateSelection} handleCopy={(selection) => manageCopy(selection)} />,
           )
         } else {
           root.render(
-            <DefaultPopover removeSelection={removeSelection} selection={item} updateSelection={updateSelection} handleCopy={onCopy} />,
+            <DefaultPopover removeSelection={removeSelection} selection={item} updateSelection={updateSelection} handleCopy={(selection) => manageCopy(selection)} />,
           )
         }
       }
