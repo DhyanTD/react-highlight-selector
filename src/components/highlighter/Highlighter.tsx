@@ -51,7 +51,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
   const getWrapper = useCallback(
     (selection: SelectionType) => {
-      const span = getSpanElement({ className: selection.className || defaultSelectionWrapperClassName })
+      const span = getSpanElement({
+        className: selection.className || defaultSelectionWrapperClassName,
+      })
       if (!disablePopover) {
         const popover = getPopoverElement({ className: PopoverClassName })
         if (!PopoverClassName) {
@@ -106,11 +108,11 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     onSelection && onSelection(newSelection)
   }
 
-  function manageCopy(selection: SelectionType) {
-    onCopy && onCopy(selection)
-  }
-
+  
   useEffect(() => {
+    function manageCopy(selection: SelectionType) {
+      onCopy && onCopy(selection)
+    }
     const sortedSelections = sortByPositionAndOffset(selections)
     if (!rootRef.current) return
     rootRef.current.innerHTML = ''
@@ -129,15 +131,25 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
         if (PopoverChildren) {
           root.render(
-            <PopoverChildren selection={item} removeSelection={removeSelection} updateSelection={updateSelection} handleCopy={(selection) => manageCopy(selection)} />,
+            <PopoverChildren
+              selection={item}
+              removeSelection={removeSelection}
+              updateSelection={updateSelection}
+              handleCopy={(selection) => manageCopy(selection)}
+            />,
           )
         } else {
           root.render(
-            <DefaultPopover removeSelection={removeSelection} selection={item} updateSelection={updateSelection} handleCopy={(selection) => manageCopy(selection)} />,
+            <DefaultPopover
+              removeSelection={removeSelection}
+              selection={item}
+              updateSelection={updateSelection}
+              handleCopy={(selection) => manageCopy(selection)}
+            />,
           )
         }
       }
     }
-  }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection])
+  }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, onCopy])
   return <div ref={rootRef} id={'highlighter-root'} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
 }

@@ -23,7 +23,9 @@ var Highlighter = function (_a) {
     tempRef.current = div;
     tempRef.current.innerHTML = htmlString;
     var getWrapper = (0, react_1.useCallback)(function (selection) {
-        var span = (0, wrapperElements_1.getSpanElement)({ className: selection.className || constants_1.defaultSelectionWrapperClassName });
+        var span = (0, wrapperElements_1.getSpanElement)({
+            className: selection.className || constants_1.defaultSelectionWrapperClassName,
+        });
         if (!disablePopover) {
             var popover_1 = (0, wrapperElements_1.getPopoverElement)({ className: PopoverClassName });
             if (!PopoverClassName) {
@@ -103,7 +105,15 @@ var Highlighter = function (_a) {
                 }
             }
         }
-    }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection]);
-    return (0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [
+        selections,
+        getWrapper,
+        PopoverChildren,
+        htmlString,
+        removeSelection,
+        updateSelection,
+        manageCopy,
+    ]);
+    return ((0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className }));
 };
 exports.Highlighter = Highlighter;

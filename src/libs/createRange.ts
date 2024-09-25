@@ -37,7 +37,10 @@ function getNodeCount(range: Range) {
 
 export const getRangeStartEndContainerText = (range: Range) => {
   if (range.startContainer === range.endContainer) {
-    return { startContainerText: range.toString(), endContainerText: range.toString() }
+    return {
+      startContainerText: range.toString(),
+      endContainerText: range.toString(),
+    }
   }
 
   const startContainerText = range.startContainer.textContent?.substring(

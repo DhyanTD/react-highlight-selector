@@ -40,5 +40,11 @@ export const useSelections = () => {
     })
   }
 
-  return { selections, setSelections, addSelection, updateSelection, removeSelection }
+  return {
+    selections,
+    setSelections,
+    addSelection,
+    updateSelection,
+    removeSelection,
+  }
 }

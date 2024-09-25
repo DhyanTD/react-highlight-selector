@@ -38,7 +38,10 @@ function getNodeCount(range) {
 export var getRangeStartEndContainerText = function (range) {
     var _a, _b;
     if (range.startContainer === range.endContainer) {
-        return { startContainerText: range.toString(), endContainerText: range.toString() };
+        return {
+            startContainerText: range.toString(),
+            endContainerText: range.toString(),
+        };
     }
     var startContainerText = (_a = range.startContainer.textContent) === null || _a === void 0 ? void 0 : _a.substring(range.startOffset, range.startContainer.textContent.length);
     var endContainerText = (_b = range.endContainer.textContent) === null || _b === void 0 ? void 0 : _b.substring(0, range.endOffset);
@@ -52,12 +55,14 @@ export function getOriginalRange(range, root) {
     var rangeNodeCount = getNodeCount(range);
     if (rangeNodeCount === 1) {
         var rangeFirstContainerText = (_a = range.startContainer.textContent) === null || _a === void 0 ? void 0 : _a.substring(range.startOffset, range.endOffset);
-        firstOffset = ((_b = firstContainer === null || firstContainer === void 0 ? void 0 : firstContainer.textContent) === null || _b === void 0 ? void 0 : _b.indexOf(rangeFirstContainerText)) || 0;
+        firstOffset =
+            ((_b = firstContainer === null || firstContainer === void 0 ? void 0 : firstContainer.textContent) === null || _b === void 0 ? void 0 : _b.indexOf(rangeFirstContainerText)) || 0;
         secondOffset = firstOffset + rangeFirstContainerText.length;
     }
     else {
         var rangeFirstContainerText = (_c = range.startContainer.textContent) === null || _c === void 0 ? void 0 : _c.substring(range.startOffset, range.startContainer.textContent.length);
-        firstOffset = ((_d = firstContainer === null || firstContainer === void 0 ? void 0 : firstContainer.textContent) === null || _d === void 0 ? void 0 : _d.indexOf(rangeFirstContainerText)) || 0;
+        firstOffset =
+            ((_d = firstContainer === null || firstContainer === void 0 ? void 0 : firstContainer.textContent) === null || _d === void 0 ? void 0 : _d.indexOf(rangeFirstContainerText)) || 0;
         var rangeLastContainerText = (_e = range.endContainer.textContent) === null || _e === void 0 ? void 0 : _e.substring(0, range.endOffset);
         secondOffset = (rangeLastContainerText === null || rangeLastContainerText === void 0 ? void 0 : rangeLastContainerText.length) || 0;
     }

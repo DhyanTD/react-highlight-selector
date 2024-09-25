@@ -43,6 +43,12 @@ var useSelections = function () {
             return tslib_1.__spreadArray([], prev, true);
         });
     };
-    return { selections: selections, setSelections: setSelections, addSelection: addSelection, updateSelection: updateSelection, removeSelection: removeSelection };
+    return {
+        selections: selections,
+        setSelections: setSelections,
+        addSelection: addSelection,
+        updateSelection: updateSelection,
+        removeSelection: removeSelection,
+    };
 };
 exports.useSelections = useSelections;

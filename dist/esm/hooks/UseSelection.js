@@ -40,5 +40,11 @@ export var useSelections = function () {
             return __spreadArray([], prev, true);
         });
     };
-    return { selections: selections, setSelections: setSelections, addSelection: addSelection, updateSelection: updateSelection, removeSelection: removeSelection };
+    return {
+        selections: selections,
+        setSelections: setSelections,
+        addSelection: addSelection,
+        updateSelection: updateSelection,
+        removeSelection: removeSelection,
+    };
 };

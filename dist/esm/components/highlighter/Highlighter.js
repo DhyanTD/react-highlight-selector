@@ -1,14 +1,14 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, } from 'react';
 import ReactDOM from 'react-dom/client';
 import { deserializeRange, serializeRange } from '../../libs/serialize';
 import { generateId } from '../../libs/uid';
 import { getPopoverElement, getSpanElement } from '../../libs/wrapperElements';
 import DefaultPopover from '../DeafultPopover';
 import { useSelections } from '../../hooks/UseSelection';
-import { defaultMinSelectionLength, defaultSelectionWrapperClassName } from '../../constants/constants';
+import { defaultMinSelectionLength, defaultSelectionWrapperClassName, } from '../../constants/constants';
 import { addHighlight, isHighlightable } from '../../libs/dom';
-import { getOriginalRange, getRangeStartEndContainerText } from '../../libs/createRange';
+import { getOriginalRange, getRangeStartEndContainerText, } from '../../libs/createRange';
 import { sortByPositionAndOffset } from '../../libs/sort';
 export var Highlighter = function (_a) {
     var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy;
@@ -19,7 +19,9 @@ export var Highlighter = function (_a) {
     tempRef.current = div;
     tempRef.current.innerHTML = htmlString;
     var getWrapper = useCallback(function (selection) {
-        var span = getSpanElement({ className: selection.className || defaultSelectionWrapperClassName });
+        var span = getSpanElement({
+            className: selection.className || defaultSelectionWrapperClassName,
+        });
         if (!disablePopover) {
             var popover_1 = getPopoverElement({ className: PopoverClassName });
             if (!PopoverClassName) {
@@ -99,6 +101,14 @@ export var Highlighter = function (_a) {
                 }
             }
         }
-    }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection]);
-    return _jsx("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [
+        selections,
+        getWrapper,
+        PopoverChildren,
+        htmlString,
+        removeSelection,
+        updateSelection,
+        manageCopy,
+    ]);
+    return (_jsx("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className }));
 };

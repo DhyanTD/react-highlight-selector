@@ -16,7 +16,10 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
     }
     classArr.push(colorClassName)
 
-    updateSelection(selection.id, { ...selection, className: classArr.join(' ') })
+    updateSelection(selection.id, {
+      ...selection,
+      className: classArr.join(' '),
+    })
   }
 
   return (
@@ -33,35 +36,69 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
       className='popover'
     >
       <p style={{ fontSize: '12px' }}>{selection.text.length} characters selected</p>
-      <div style={{ display: 'flex', minWidth: '150px', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          minWidth: '150px',
+          gap: '10px',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <div
           onClick={() => changeColor('bg-red')}
-          style={{ backgroundColor: '#FF407D', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }}
+          style={{
+            backgroundColor: '#FF407D',
+            cursor: 'pointer',
+            height: '25px',
+            width: '25px',
+            borderRadius: '50%',
+          }}
         >
           {' '}
         </div>
         <div
           onClick={() => changeColor('bg-yellow')}
-          style={{ backgroundColor: '#F5DD61', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }}
+          style={{
+            backgroundColor: '#F5DD61',
+            cursor: 'pointer',
+            height: '25px',
+            width: '25px',
+            borderRadius: '50%',
+          }}
         >
           {' '}
         </div>
         <div
           onClick={() => changeColor('bg-blue')}
-          style={{ backgroundColor: '#59D5E0', cursor: 'pointer', height: '25px', width: '25px', borderRadius: '50%' }}
+          style={{
+            backgroundColor: '#59D5E0',
+            cursor: 'pointer',
+            height: '25px',
+            width: '25px',
+            borderRadius: '50%',
+          }}
         >
           {' '}
         </div>
-        <div onClick={handleDelete} style={{ color: 'red', cursor: 'pointer', fontSize: 24, fontWeight: 'bold' }}>
+        <div
+          onClick={handleDelete}
+          style={{
+            color: 'red',
+            cursor: 'pointer',
+            fontSize: 24,
+            fontWeight: 'bold',
+          }}
+        >
           {' '}
           &#x1F5D1;
         </div>
-      {handleCopy &&
-        <div onClick={()=>handleCopy(selection)} style={{ color: 'white', cursor: 'pointer', fontSize: 16, }}>
-          {' '}
-          copy
-        </div>
-        }
+        {handleCopy && (
+          <div onClick={() => handleCopy(selection)} style={{ color: 'white', cursor: 'pointer', fontSize: 16 }}>
+            {' '}
+            copy
+          </div>
+        )}
       </div>
     </div>
   )
