@@ -1,11 +1,11 @@
 import { defaultSelectionWrapperClassName } from '../constants/constants'
 import { PopoverChildrentype } from '../types'
 
-const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updateSelection }) => {
+const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updateSelection, handleCopy }) => {
   const handleDelete = () => {
     removeSelection(selection)
   }
-
+  
   const changeColor = (colorClassName: string) => {
     const classes = selection.className || defaultSelectionWrapperClassName
     const classArr = classes.split(' ')
