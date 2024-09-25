@@ -24,6 +24,7 @@ type BaseHighlighterProps = {
   onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void
   onClick?: MouseEventHandler<HTMLDivElement>
   onSelection?: (selection: SelectionType) => void
+  onCopy?: (selection: SelectionType) => void
 }
 
 export const Highlighter: React.FC<BaseHighlighterProps> = ({
@@ -38,6 +39,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   selectionWrapperClassName,
   onSelection,
   onClick,
+  onCopy,
   // selections,
 }) => {
   const { selections, addSelection, removeSelection, updateSelection } = useSelections()
@@ -123,11 +125,11 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
         if (PopoverChildren) {
           root.render(
-            <PopoverChildren selection={item} removeSelection={removeSelection} updateSelection={updateSelection} />,
+            <PopoverChildren selection={item} removeSelection={removeSelection} updateSelection={updateSelection} handleCopy={onCopy} />,
           )
         } else {
           root.render(
-            <DefaultPopover removeSelection={removeSelection} selection={item} updateSelection={updateSelection} />,
+            <DefaultPopover removeSelection={removeSelection} selection={item} updateSelection={updateSelection} handleCopy={onCopy} />,
           )
         }
       }
