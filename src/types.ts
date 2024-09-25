@@ -8,6 +8,7 @@ export type SelectionType = {
   [Key: string]: any
 }
 export type PopoverChildrentype = React.FC<{
+  handleCopy:(selection: SelectionType) => void
   selection: SelectionType
   removeSelection: (slection: SelectionType) => void
   updateSelection: (id: string, updatedSelection: SelectionType) => void
