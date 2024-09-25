@@ -15,7 +15,7 @@ var dom_1 = require("../../libs/dom");
 var createRange_1 = require("../../libs/createRange");
 var sort_1 = require("../../libs/sort");
 var Highlighter = function (_a) {
-    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick;
+    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy;
     var _b = (0, UseSelection_1.useSelections)(), selections = _b.selections, addSelection = _b.addSelection, removeSelection = _b.removeSelection, updateSelection = _b.updateSelection;
     var rootRef = (0, react_1.useRef)(null);
     var tempRef = (0, react_1.useRef)(null);
@@ -93,10 +93,10 @@ var Highlighter = function (_a) {
                     return;
                 var root = client_1.default.createRoot(popoverRoot);
                 if (PopoverChildren) {
-                    root.render((0, jsx_runtime_1.jsx)(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection }));
+                    root.render((0, jsx_runtime_1.jsx)(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: onCopy }));
                 }
                 else {
-                    root.render((0, jsx_runtime_1.jsx)(DeafultPopover_1.default, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection }));
+                    root.render((0, jsx_runtime_1.jsx)(DeafultPopover_1.default, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: onCopy }));
                 }
             }
         }

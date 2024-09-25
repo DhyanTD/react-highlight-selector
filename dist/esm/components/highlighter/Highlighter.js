@@ -11,7 +11,7 @@ import { addHighlight, isHighlightable } from '../../libs/dom';
 import { getOriginalRange, getRangeStartEndContainerText } from '../../libs/createRange';
 import { sortByPositionAndOffset } from '../../libs/sort';
 export var Highlighter = function (_a) {
-    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick;
+    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy;
     var _b = useSelections(), selections = _b.selections, addSelection = _b.addSelection, removeSelection = _b.removeSelection, updateSelection = _b.updateSelection;
     var rootRef = useRef(null);
     var tempRef = useRef(null);
@@ -89,10 +89,10 @@ export var Highlighter = function (_a) {
                     return;
                 var root = ReactDOM.createRoot(popoverRoot);
                 if (PopoverChildren) {
-                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection }));
+                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: onCopy }));
                 }
                 else {
-                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection }));
+                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: onCopy }));
                 }
             }
         }
