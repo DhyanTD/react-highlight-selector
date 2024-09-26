@@ -1,6 +1,6 @@
 {
   "name": "react-highlight-selector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Text highlighter with customizable palette and text copier",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -19,7 +19,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run prettier && npm run lint"
   },
-   "keywords": [
+  "keywords": [
     "selection",
     "highlight",
     "annotations",
@@ -52,8 +52,8 @@
     "color palette",
     "html string highlight",
     "react string highlighter"
-],
-     "author": "Dhyan T D",
+  ],
+  "author": "Dhyan T D",
   "license": "MIT",
   "dependencies": {
     "xpath-range": "^1.1.1"
