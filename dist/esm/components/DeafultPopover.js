@@ -24,7 +24,7 @@ var DefaultPopover = function (_a) {
             display: 'flex',
             flexDirection: 'column',
             gap: '5px',
-        }, className: "popover", children: [_jsxs("p", { style: { fontSize: '12px' }, children: [selection.text.length, " characters selected"] }), _jsxs("div", { style: {
+        }, className: 'popover', children: [_jsxs("p", { style: { fontSize: '12px' }, children: [selection.text.length, " characters selected"] }), _jsxs("div", { style: {
                     display: 'flex',
                     minWidth: '150px',
                     gap: '10px',

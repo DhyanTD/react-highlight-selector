@@ -77,10 +77,10 @@ var Highlighter = function (_a) {
         addSelection(newSelection);
         onSelection && onSelection(newSelection);
     };
-    function manageCopy(selection) {
-        onCopy && onCopy(selection);
-    }
     (0, react_1.useEffect)(function () {
+        function manageCopy(selection) {
+            onCopy && onCopy(selection);
+        }
         var sortedSelections = (0, sort_1.sortByPositionAndOffset)(selections);
         if (!rootRef.current)
             return;
@@ -105,15 +105,7 @@ var Highlighter = function (_a) {
                 }
             }
         }
-    }, [
-        selections,
-        getWrapper,
-        PopoverChildren,
-        htmlString,
-        removeSelection,
-        updateSelection,
-        manageCopy,
-    ]);
-    return ((0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className }));
+    }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, onCopy]);
+    return (0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
 };
 exports.Highlighter = Highlighter;

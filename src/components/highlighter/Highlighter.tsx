@@ -108,7 +108,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     onSelection && onSelection(newSelection)
   }
 
-  
   useEffect(() => {
     function manageCopy(selection: SelectionType) {
       onCopy && onCopy(selection)
