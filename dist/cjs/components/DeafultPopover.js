@@ -55,6 +55,6 @@ var DefaultPopover = function (_a) {
                             cursor: 'pointer',
                             fontSize: 24,
                             fontWeight: 'bold',
-                        }, children: [' ', "\uD83D\uDDD1"] }), handleCopy && ((0, jsx_runtime_1.jsxs)("div", { onClick: function () { return handleCopy(selection); }, style: { color: 'white', cursor: 'pointer', fontSize: 16 }, children: [' ', "copy"] }))] })] }));
+                        }, children: [' ', "\uD83D\uDDD1"] }), handleCopy && ((0, jsx_runtime_1.jsxs)("div", { onClick: function () { return handleCopy(selection); }, style: { color: 'black', cursor: 'pointer', fontSize: 16 }, children: [' ', "copy"] }))] })] }));
 };
 exports.default = DefaultPopover;

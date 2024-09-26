@@ -53,6 +53,6 @@ var DefaultPopover = function (_a) {
                             cursor: 'pointer',
                             fontSize: 24,
                             fontWeight: 'bold',
-                        }, children: [' ', "\uD83D\uDDD1"] }), handleCopy && (_jsxs("div", { onClick: function () { return handleCopy(selection); }, style: { color: 'white', cursor: 'pointer', fontSize: 16 }, children: [' ', "copy"] }))] })] }));
+                        }, children: [' ', "\uD83D\uDDD1"] }), handleCopy && (_jsxs("div", { onClick: function () { return handleCopy(selection); }, style: { color: 'black', cursor: 'pointer', fontSize: 16 }, children: [' ', "copy"] }))] })] }));
 };
 export default DefaultPopover;

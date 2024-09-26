@@ -1,7 +1,13 @@
 import { defaultSelectionWrapperClassName } from '../constants/constants'
 import { PopoverChildrentype } from '../types'
 
-const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updateSelection, handleCopy }) => {
+const DefaultPopover: PopoverChildrentype = ({
+  selection,
+  removeSelection,
+  updateSelection,
+  disableMultiColorHighlight,
+  handleCopy,
+}) => {
   const handleDelete = () => {
     removeSelection(selection)
   }
@@ -36,6 +42,7 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
       className='popover'
     >
       <p style={{ fontSize: '12px' }}>{selection.text.length} characters selected</p>
+
       <div
         style={{
           display: 'flex',
@@ -45,42 +52,46 @@ const DefaultPopover: PopoverChildrentype = ({ selection, removeSelection, updat
           alignItems: 'center',
         }}
       >
-        <div
-          onClick={() => changeColor('bg-red')}
-          style={{
-            backgroundColor: '#FF407D',
-            cursor: 'pointer',
-            height: '25px',
-            width: '25px',
-            borderRadius: '50%',
-          }}
-        >
-          {' '}
-        </div>
-        <div
-          onClick={() => changeColor('bg-yellow')}
-          style={{
-            backgroundColor: '#F5DD61',
-            cursor: 'pointer',
-            height: '25px',
-            width: '25px',
-            borderRadius: '50%',
-          }}
-        >
-          {' '}
-        </div>
-        <div
-          onClick={() => changeColor('bg-blue')}
-          style={{
-            backgroundColor: '#59D5E0',
-            cursor: 'pointer',
-            height: '25px',
-            width: '25px',
-            borderRadius: '50%',
-          }}
-        >
-          {' '}
-        </div>
+        {disableMultiColorHighlight ? null : (
+          <>
+            <div
+              onClick={() => changeColor('bg-red')}
+              style={{
+                backgroundColor: '#FF407D',
+                cursor: 'pointer',
+                height: '25px',
+                width: '25px',
+                borderRadius: '50%',
+              }}
+            >
+              {' '}
+            </div>
+            <div
+              onClick={() => changeColor('bg-yellow')}
+              style={{
+                backgroundColor: '#F5DD61',
+                cursor: 'pointer',
+                height: '25px',
+                width: '25px',
+                borderRadius: '50%',
+              }}
+            >
+              {' '}
+            </div>
+            <div
+              onClick={() => changeColor('bg-blue')}
+              style={{
+                backgroundColor: '#59D5E0',
+                cursor: 'pointer',
+                height: '25px',
+                width: '25px',
+                borderRadius: '50%',
+              }}
+            >
+              {' '}
+            </div>
+          </>
+        )}
         <div
           onClick={handleDelete}
           style={{
