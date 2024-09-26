@@ -1,8 +1,8 @@
 import { __assign } from "tslib";
-import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
+import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { defaultSelectionWrapperClassName } from '../constants/constants';
 var DefaultPopover = function (_a) {
-    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, handleCopy = _a.handleCopy;
+    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, disableMultiColorHighlight = _a.disableMultiColorHighlight, handleCopy = _a.handleCopy;
     var handleDelete = function () {
         removeSelection(selection);
     };
@@ -30,25 +30,25 @@ var DefaultPopover = function (_a) {
                     gap: '10px',
                     justifyContent: 'center',
                     alignItems: 'center',
-                }, children: [_jsx("div", { onClick: function () { return changeColor('bg-red'); }, style: {
-                            backgroundColor: '#FF407D',
-                            cursor: 'pointer',
-                            height: '25px',
-                            width: '25px',
-                            borderRadius: '50%',
-                        }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-yellow'); }, style: {
-                            backgroundColor: '#F5DD61',
-                            cursor: 'pointer',
-                            height: '25px',
-                            width: '25px',
-                            borderRadius: '50%',
-                        }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-blue'); }, style: {
-                            backgroundColor: '#59D5E0',
-                            cursor: 'pointer',
-                            height: '25px',
-                            width: '25px',
-                            borderRadius: '50%',
-                        }, children: ' ' }), _jsxs("div", { onClick: handleDelete, style: {
+                }, children: [disableMultiColorHighlight ? null : (_jsxs(_Fragment, { children: [_jsx("div", { onClick: function () { return changeColor('bg-red'); }, style: {
+                                    backgroundColor: '#FF407D',
+                                    cursor: 'pointer',
+                                    height: '25px',
+                                    width: '25px',
+                                    borderRadius: '50%',
+                                }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-yellow'); }, style: {
+                                    backgroundColor: '#F5DD61',
+                                    cursor: 'pointer',
+                                    height: '25px',
+                                    width: '25px',
+                                    borderRadius: '50%',
+                                }, children: ' ' }), _jsx("div", { onClick: function () { return changeColor('bg-blue'); }, style: {
+                                    backgroundColor: '#59D5E0',
+                                    cursor: 'pointer',
+                                    height: '25px',
+                                    width: '25px',
+                                    borderRadius: '50%',
+                                }, children: ' ' })] })), _jsxs("div", { onClick: handleDelete, style: {
                             color: 'red',
                             cursor: 'pointer',
                             fontSize: 24,

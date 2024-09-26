@@ -9,6 +9,7 @@ type BaseHighlighterProps = {
     PopoverClassName?: string;
     PopoverChildren?: PopoverChildrentype;
     disablePopover?: boolean;
+    disableMultiColorHighlight?: boolean;
     onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void;
     onClick?: MouseEventHandler<HTMLDivElement>;
     onSelection?: (selection: SelectionType) => void;

@@ -12,6 +12,7 @@ export type PopoverChildrentype = React.FC<{
     selection: SelectionType;
     removeSelection: (slection: SelectionType) => void;
     updateSelection: (id: string, updatedSelection: SelectionType) => void;
+    disableMultiColorHighlight?: boolean;
 }>;
 export type XpathType = {
     start: string;
