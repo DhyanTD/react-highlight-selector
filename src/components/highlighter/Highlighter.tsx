@@ -83,11 +83,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   )
 
   const handleHoverAndClickEffects = () => {
-
     if (!rootRef.current) return
 
     rootRef.current.querySelectorAll('.hover-content-mark').forEach((mark) => {
-
       const uniqueId = mark.getAttribute('data-hover-id')
 
       const shortHtml = mark.getAttribute('data-short-html')
@@ -99,7 +97,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
       const markElement = mark as HTMLElement
 
       if (shortHtml && shortHtml.trim() !== '') {
-
         const popup = document.createElement('div')
 
         popup.className = 'hover-content-popup'
@@ -108,24 +105,18 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
         markElement.appendChild(popup)
 
-        let timeout: any;
+        let timeout: any
 
         const showPopup = () => {
-
           clearTimeout(timeout)
 
           popup.style.display = 'block'
-
         }
 
         const hidePopup = () => {
-
           timeout = setTimeout(() => {
-
             popup.style.display = 'none'
-
           }, 100)
-
         }
 
         markElement.addEventListener('mouseenter', showPopup)
@@ -137,7 +128,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
         popup.addEventListener('mouseleave', hidePopup)
 
         popup.querySelector('.view-more')?.addEventListener('click', () => {
-
           const modal = document.createElement('div')
 
           modal.className = 'modal'
@@ -157,17 +147,11 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
           document.body.appendChild(modal)
 
           modal.querySelector('.close-button')?.addEventListener('click', () => {
-
             document.body.removeChild(modal)
-
           })
-
         })
-
       } else {
-
         markElement.addEventListener('click', (event) => {
-
           event.preventDefault()
 
           const modal = document.createElement('div')
@@ -189,17 +173,11 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
           document.body.appendChild(modal)
 
           modal.querySelector('.close-button')?.addEventListener('click', () => {
-
             document.body.removeChild(modal)
-
           })
-
         })
-
       }
-
     })
-
   }
 
   const handleMouseUp: MouseEventHandler<HTMLDivElement> = () => {
@@ -230,13 +208,12 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     onSelection && onSelection(newSelection)
   }
   function manageCopy(selection: SelectionType) {
-    const span = getSpanElement({
-      className: selection.className || defaultSelectionWrapperClassName,
-    })
+    // const span = getSpanElement({
+    //   className: selection.className || defaultSelectionWrapperClassName,
+    // })
     onCopy && onCopy(selection)
   }
   useEffect(() => {
-
     const sortedSelections = sortByPositionAndOffset(selections)
     if (!rootRef.current) return
     rootRef.current.innerHTML = ''
@@ -278,8 +255,15 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
         }
       }
     }
-  }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, disableMultiColorHighlight])
-
+  }, [
+    selections,
+    getWrapper,
+    PopoverChildren,
+    htmlString,
+    removeSelection,
+    updateSelection,
+    disableMultiColorHighlight,
+  ])
 
   return <div ref={rootRef} id={'highlighter-root'} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
 }

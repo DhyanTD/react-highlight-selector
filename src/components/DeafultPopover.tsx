@@ -105,7 +105,13 @@ const DefaultPopover: PopoverChildrentype = ({
           &#x1F5D1;
         </div>
         {handleCopy && (
-          <div onClick={(e) =>{e.stopPropagation(); handleCopy(selection)}} style={{ color: 'black', cursor: 'pointer', fontSize: 16 }}>
+          <div
+            onClick={(e) => {
+              e.stopPropagation()
+              handleCopy(selection)
+            }}
+            style={{ color: 'black', cursor: 'pointer', fontSize: 16 }}
+          >
             {' '}
             copy
           </div>
