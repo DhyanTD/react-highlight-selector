@@ -82,6 +82,126 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     [PopoverClassName, disablePopover, onClickHighlight],
   )
 
+  const handleHoverAndClickEffects = () => {
+
+    if (!rootRef.current) return
+
+    rootRef.current.querySelectorAll('.hover-content-mark').forEach((mark) => {
+
+      const uniqueId = mark.getAttribute('data-hover-id')
+
+      const shortHtml = mark.getAttribute('data-short-html')
+
+      const longHtml = mark.getAttribute('data-long-html')
+
+      if (!uniqueId || (!shortHtml && !longHtml)) return
+
+      const markElement = mark as HTMLElement
+
+      if (shortHtml && shortHtml.trim() !== '') {
+
+        const popup = document.createElement('div')
+
+        popup.className = 'hover-content-popup'
+
+        popup.innerHTML = shortHtml + (longHtml ? `<button class="view-more">View More</button>` : '')
+
+        markElement.appendChild(popup)
+
+        let timeout: any;
+
+        const showPopup = () => {
+
+          clearTimeout(timeout)
+
+          popup.style.display = 'block'
+
+        }
+
+        const hidePopup = () => {
+
+          timeout = setTimeout(() => {
+
+            popup.style.display = 'none'
+
+          }, 100)
+
+        }
+
+        markElement.addEventListener('mouseenter', showPopup)
+
+        markElement.addEventListener('mouseleave', hidePopup)
+
+        popup.addEventListener('mouseenter', showPopup)
+
+        popup.addEventListener('mouseleave', hidePopup)
+
+        popup.querySelector('.view-more')?.addEventListener('click', () => {
+
+          const modal = document.createElement('div')
+
+          modal.className = 'modal'
+
+          modal.innerHTML = `
+
+            <div class="modal-content">
+
+              <button class="close-button">close</button>
+
+              ${longHtml}
+
+            </div>
+
+          `
+
+          document.body.appendChild(modal)
+
+          modal.querySelector('.close-button')?.addEventListener('click', () => {
+
+            document.body.removeChild(modal)
+
+          })
+
+        })
+
+      } else {
+
+        markElement.addEventListener('click', (event) => {
+
+          event.preventDefault()
+
+          const modal = document.createElement('div')
+
+          modal.className = 'modal'
+
+          modal.innerHTML = `
+
+            <div class="modal-content">
+
+              <button class="close-button">close</button>
+
+              ${longHtml}
+
+            </div>
+
+          `
+
+          document.body.appendChild(modal)
+
+          modal.querySelector('.close-button')?.addEventListener('click', () => {
+
+            document.body.removeChild(modal)
+
+          })
+
+        })
+
+      }
+
+    })
+
+  }
+
   const handleMouseUp: MouseEventHandler<HTMLDivElement> = () => {
     // e.stopPropagation()
     const selection = window.getSelection()
@@ -109,15 +229,20 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     addSelection(newSelection)
     onSelection && onSelection(newSelection)
   }
-
+  function manageCopy(selection: SelectionType) {
+    const span = getSpanElement({
+      className: selection.className || defaultSelectionWrapperClassName,
+    })
+    onCopy && onCopy(selection)
+  }
   useEffect(() => {
-    function manageCopy(selection: SelectionType) {
-      onCopy && onCopy(selection)
-    }
+
     const sortedSelections = sortByPositionAndOffset(selections)
     if (!rootRef.current) return
     rootRef.current.innerHTML = ''
     rootRef.current.innerHTML = htmlString
+
+    handleHoverAndClickEffects()
 
     if (sortedSelections && sortedSelections.length) {
       for (let i = 0; i < sortedSelections.length; i++) {
@@ -153,6 +278,8 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
         }
       }
     }
-  }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, onCopy, disableMultiColorHighlight])
+  }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, disableMultiColorHighlight])
+
+
   return <div ref={rootRef} id={'highlighter-root'} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
 }
