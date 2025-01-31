@@ -54,7 +54,7 @@ export var Highlighter = function (_a) {
             if (!uniqueId || (!shortHtml && !longHtml))
                 return;
             var markElement = mark;
-            if (shortHtml) {
+            if (shortHtml && shortHtml.trim() !== '') {
                 var popup_1 = document.createElement('div');
                 popup_1.className = 'hover-content-popup';
                 popup_1.innerHTML = shortHtml + (longHtml ? "<button class=\"view-more\">View More</button>" : '');
