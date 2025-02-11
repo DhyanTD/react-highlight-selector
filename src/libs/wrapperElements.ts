@@ -1,12 +1,12 @@
 export const getSpanElement = ({ className }: { className?: string }) => {
-  const span = document.createElement('span')
+  const span = document.createElement('div')
   if (className) {
     span.className = className
   }
   return span
 }
 export const getPopoverElement = ({ className }: { className?: string }) => {
-  const popover = document.createElement('span')
+  const popover = document.createElement('div')
 
   if (!className) {
     popover.setAttribute(
@@ -20,7 +20,7 @@ export const getPopoverElement = ({ className }: { className?: string }) => {
         bottom:  100%;
         padding-bottom:16px;
         opacity:  0;
-        
+        display: inline-block; 
         transition: opacity  0.3s;`,
     )
     return popover

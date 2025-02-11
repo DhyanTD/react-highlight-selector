@@ -21,6 +21,7 @@ type BaseHighlighterProps = {
   PopoverChildren?: PopoverChildrentype
   disablePopover?: boolean
   disableMultiColorHighlight?: boolean
+  identifier?: string
 
   onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void
   onClick?: MouseEventHandler<HTMLDivElement>
@@ -44,6 +45,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   onCopy,
   disableMultiColorHighlight,
   onHiglightChange,
+  identifier
   // selections,
 }) => {
   const { selections, addSelection, removeSelection, updateSelection } = useSelections()
@@ -54,7 +56,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   tempRef.current.innerHTML = htmlString
 
 
-   const handleHoverAndClickEffects = () => {
+  const handleHoverAndClickEffects = () => {
     if (!rootRef.current) return
     rootRef.current.querySelectorAll('.hover-content-mark').forEach((mark) => {
       const uniqueId = mark.getAttribute('data-hover-id')
@@ -154,7 +156,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     [PopoverClassName, disablePopover, onClickHighlight],
   )
 
- 
+
 
   const handleMouseUp: MouseEventHandler<HTMLDivElement> = () => {
     // e.stopPropagation()
@@ -197,7 +199,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
 
     handleHoverAndClickEffects()
 
-    onHiglightChange && onHiglightChange(rootRef.)
 
     if (sortedSelections && sortedSelections.length) {
       for (let i = 0; i < sortedSelections.length; i++) {
@@ -205,6 +206,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
         const range = deserializeRange(item.meta, rootRef.current!)
         if (range) {
           addHighlight(range, getWrapper(item))
+          // onHiglightChange && onHiglightChange('')
         }
         const popoverRoot = document.getElementById(`pop-${item.id}`)
         if (!popoverRoot) return
@@ -243,9 +245,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     disableMultiColorHighlight,
   ])
 
-  const memoizedChildren = useMemo(()=> {
-  return <div ref={rootRef} id={'highlighter-root'} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
-  }, [ onClick, handleMouseUp, className])
+  const memoizedChildren = useMemo(() => {
+    return <div ref={rootRef} id={identifier ? `highlighter-root` + identifier : `highlighter-root`} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
+  }, [onClick, handleMouseUp, className])
 
   return memoizedChildren
 }

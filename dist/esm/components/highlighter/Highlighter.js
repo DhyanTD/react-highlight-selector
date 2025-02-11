@@ -11,38 +11,15 @@ import { addHighlight, isHighlightable } from '../../libs/dom';
 import { getOriginalRange, getRangeStartEndContainerText } from '../../libs/createRange';
 import { sortByPositionAndOffset } from '../../libs/sort';
 export var Highlighter = function (_a) {
-    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight, onHiglightChange = _a.onHiglightChange;
+    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight, onHiglightChange = _a.onHiglightChange, identifier = _a.identifier
+    // selections,
+    ;
     var _b = useSelections(), selections = _b.selections, addSelection = _b.addSelection, removeSelection = _b.removeSelection, updateSelection = _b.updateSelection;
     var rootRef = useRef(null);
     var tempRef = useRef(null);
     var div = document.createElement('div');
     tempRef.current = div;
     tempRef.current.innerHTML = htmlString;
-    var getWrapper = useCallback(function (selection) {
-        var span = getSpanElement({
-            className: selection.className || defaultSelectionWrapperClassName,
-        });
-        if (!disablePopover) {
-            var popover_1 = getPopoverElement({ className: PopoverClassName });
-            if (!PopoverClassName) {
-                span.onmouseover = function () {
-                    popover_1.style.visibility = 'visible';
-                    popover_1.style.opacity = '1';
-                };
-                span.onmouseout = function () {
-                    popover_1.style.visibility = 'hidden';
-                    popover_1.style.opacity = '0';
-                };
-            }
-            popover_1.id = "pop-".concat(selection.id);
-            span.appendChild(popover_1);
-        }
-        if (onClickHighlight) {
-            span.onclick = function (e) { return onClickHighlight(selection, e); };
-        }
-        span.id = selection.id;
-        return span;
-    }, [PopoverClassName, disablePopover, onClickHighlight]);
     var handleHoverAndClickEffects = function () {
         if (!rootRef.current)
             return;
@@ -77,7 +54,7 @@ export var Highlighter = function (_a) {
                     var _a;
                     var modal = document.createElement('div');
                     modal.className = 'modal';
-                    modal.innerHTML = "\n\n            <div class=\"modal-content\">\n\n              <button class=\"close-button\">close</button>\n\n              ".concat(longHtml, "\n\n            </div>\n\n          ");
+                    modal.innerHTML = "\n            <div class=\"modal-content\">\n              <button class=\"close-button\">close</button>\n              ".concat(longHtml, "\n            </div>\n          ");
                     document.body.appendChild(modal);
                     (_a = modal.querySelector('.close-button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', function () {
                         document.body.removeChild(modal);
@@ -90,7 +67,7 @@ export var Highlighter = function (_a) {
                     event.preventDefault();
                     var modal = document.createElement('div');
                     modal.className = 'modal';
-                    modal.innerHTML = "\n\n            <div class=\"modal-content\">\n\n              <button class=\"close-button\">close</button>\n\n              ".concat(longHtml, "\n\n            </div>\n\n          ");
+                    modal.innerHTML = "\n            <div class=\"modal-content\">\n              <button class=\"close-button\">close</button>\n              ".concat(longHtml, "\n            </div>\n          ");
                     document.body.appendChild(modal);
                     (_a = modal.querySelector('.close-button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', function () {
                         document.body.removeChild(modal);
@@ -99,6 +76,31 @@ export var Highlighter = function (_a) {
             }
         });
     };
+    var getWrapper = useCallback(function (selection) {
+        var span = getSpanElement({
+            className: selection.className || defaultSelectionWrapperClassName,
+        });
+        if (!disablePopover) {
+            var popover_1 = getPopoverElement({ className: PopoverClassName });
+            if (!PopoverClassName) {
+                span.onmouseover = function () {
+                    popover_1.style.visibility = 'visible';
+                    popover_1.style.opacity = '1';
+                };
+                span.onmouseout = function () {
+                    popover_1.style.visibility = 'hidden';
+                    popover_1.style.opacity = '0';
+                };
+            }
+            popover_1.id = "pop-".concat(selection.id);
+            span.appendChild(popover_1);
+        }
+        if (onClickHighlight) {
+            span.onclick = function (e) { return onClickHighlight(selection, e); };
+        }
+        span.id = selection.id;
+        return span;
+    }, [PopoverClassName, disablePopover, onClickHighlight]);
     var handleMouseUp = function () {
         // e.stopPropagation()
         var selection = window.getSelection();
@@ -139,16 +141,16 @@ export var Highlighter = function (_a) {
         var sortedSelections = sortByPositionAndOffset(selections);
         if (!rootRef.current)
             return;
-        // rootRef.current.innerHTML = ''
+        rootRef.current.innerHTML = '';
         rootRef.current.innerHTML = htmlString;
         handleHoverAndClickEffects();
-        onHiglightChange && onHiglightChange(rootRef.current.innerHTML);
         if (sortedSelections && sortedSelections.length) {
             for (var i = 0; i < sortedSelections.length; i++) {
                 var item = sortedSelections[i];
                 var range = deserializeRange(item.meta, rootRef.current);
                 if (range) {
                     addHighlight(range, getWrapper(item));
+                    // onHiglightChange && onHiglightChange('')
                 }
                 var popoverRoot = document.getElementById("pop-".concat(item.id));
                 if (!popoverRoot)
@@ -172,7 +174,7 @@ export var Highlighter = function (_a) {
         disableMultiColorHighlight,
     ]);
     var memoizedChildren = useMemo(function () {
-        return _jsx("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+        return _jsx("div", { ref: rootRef, id: identifier ? "highlighter-root" + identifier : "highlighter-root", onClick: onClick, onMouseUp: handleMouseUp, className: className });
     }, [onClick, handleMouseUp, className]);
     return memoizedChildren;
 };

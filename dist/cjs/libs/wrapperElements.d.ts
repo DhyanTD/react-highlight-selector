@@ -1,6 +1,6 @@
 export declare const getSpanElement: ({ className }: {
     className?: string;
-}) => HTMLSpanElement;
+}) => HTMLDivElement;
 export declare const getPopoverElement: ({ className }: {
     className?: string;
-}) => HTMLSpanElement;
+}) => HTMLDivElement;
