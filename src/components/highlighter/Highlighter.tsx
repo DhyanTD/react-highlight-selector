@@ -26,8 +26,7 @@ type BaseHighlighterProps = {
   onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void
   onClick?: MouseEventHandler<HTMLDivElement>
   onSelection?: (selection: SelectionType) => void
-  onCopy?: (selection: SelectionType) => void;
-  onHiglightChange?: (htmlString: string) => void
+  onCopy?: (selection: SelectionType) => void
 }
 
 export const Highlighter: React.FC<BaseHighlighterProps> = ({
@@ -44,8 +43,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   onClick,
   onCopy,
   disableMultiColorHighlight,
-  onHiglightChange,
-  identifier
+  identifier,
   // selections,
 }) => {
   const { selections, addSelection, removeSelection, updateSelection } = useSelections()
@@ -54,7 +52,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   const div = document.createElement('div')
   tempRef.current = div
   tempRef.current.innerHTML = htmlString
-
 
   const handleHoverAndClickEffects = () => {
     if (!rootRef.current) return
@@ -156,8 +153,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     [PopoverClassName, disablePopover, onClickHighlight],
   )
 
-
-
   const handleMouseUp: MouseEventHandler<HTMLDivElement> = () => {
     // e.stopPropagation()
     const selection = window.getSelection()
@@ -198,7 +193,6 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     rootRef.current.innerHTML = htmlString
 
     handleHoverAndClickEffects()
-
 
     if (sortedSelections && sortedSelections.length) {
       for (let i = 0; i < sortedSelections.length; i++) {
@@ -246,7 +240,15 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   ])
 
   const memoizedChildren = useMemo(() => {
-    return <div ref={rootRef} id={identifier ? `highlighter-root` + identifier : `highlighter-root`} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
+    return (
+      <div
+        ref={rootRef}
+        id={identifier ? `highlighter-root` + identifier : `highlighter-root`}
+        onClick={onClick}
+        onMouseUp={handleMouseUp}
+        className={className}
+      />
+    )
   }, [onClick, handleMouseUp, className])
 
   return memoizedChildren
