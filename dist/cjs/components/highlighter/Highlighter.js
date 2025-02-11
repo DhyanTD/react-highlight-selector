@@ -15,7 +15,7 @@ var dom_1 = require("../../libs/dom");
 var createRange_1 = require("../../libs/createRange");
 var sort_1 = require("../../libs/sort");
 var Highlighter = function (_a) {
-    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight;
+    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight, onHiglightChange = _a.onHiglightChange;
     var _b = (0, UseSelection_1.useSelections)(), selections = _b.selections, addSelection = _b.addSelection, removeSelection = _b.removeSelection, updateSelection = _b.updateSelection;
     var rootRef = (0, react_1.useRef)(null);
     var tempRef = (0, react_1.useRef)(null);
@@ -134,18 +134,19 @@ var Highlighter = function (_a) {
         onSelection && onSelection(newSelection);
     };
     function manageCopy(selection) {
-        var span = (0, wrapperElements_1.getSpanElement)({
-            className: selection.className || constants_1.defaultSelectionWrapperClassName,
-        });
+        // const span = getSpanElement({
+        //   className: selection.className || defaultSelectionWrapperClassName,
+        // })
         onCopy && onCopy(selection);
     }
     (0, react_1.useEffect)(function () {
         var sortedSelections = (0, sort_1.sortByPositionAndOffset)(selections);
         if (!rootRef.current)
             return;
-        rootRef.current.innerHTML = '';
+        // rootRef.current.innerHTML = ''
         rootRef.current.innerHTML = htmlString;
         handleHoverAndClickEffects();
+        onHiglightChange && onHiglightChange(rootRef.current.innerHTML);
         if (sortedSelections && sortedSelections.length) {
             for (var i = 0; i < sortedSelections.length; i++) {
                 var item = sortedSelections[i];
@@ -165,7 +166,18 @@ var Highlighter = function (_a) {
                 }
             }
         }
-    }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, disableMultiColorHighlight]);
-    return (0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [
+        selections,
+        getWrapper,
+        PopoverChildren,
+        htmlString,
+        removeSelection,
+        updateSelection,
+        disableMultiColorHighlight,
+    ]);
+    var memoizedChildren = (0, react_1.useMemo)(function () {
+        return (0, jsx_runtime_1.jsx)("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [onClick, handleMouseUp, className]);
+    return memoizedChildren;
 };
 exports.Highlighter = Highlighter;

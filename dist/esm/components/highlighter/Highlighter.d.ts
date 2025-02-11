@@ -14,6 +14,7 @@ type BaseHighlighterProps = {
     onClick?: MouseEventHandler<HTMLDivElement>;
     onSelection?: (selection: SelectionType) => void;
     onCopy?: (selection: SelectionType) => void;
+    onHiglightChange?: (htmlString: string) => void;
 };
 export declare const Highlighter: React.FC<BaseHighlighterProps>;
 export {};

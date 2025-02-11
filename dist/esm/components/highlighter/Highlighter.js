@@ -1,5 +1,5 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { deserializeRange, serializeRange } from '../../libs/serialize';
 import { generateId } from '../../libs/uid';
@@ -11,7 +11,7 @@ import { addHighlight, isHighlightable } from '../../libs/dom';
 import { getOriginalRange, getRangeStartEndContainerText } from '../../libs/createRange';
 import { sortByPositionAndOffset } from '../../libs/sort';
 export var Highlighter = function (_a) {
-    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight;
+    var htmlString = _a.htmlString, onClickHighlight = _a.onClickHighlight, disablePopover = _a.disablePopover, maxSelectionLength = _a.maxSelectionLength, minSelectionLength = _a.minSelectionLength, className = _a.className, PopoverChildren = _a.PopoverChildren, PopoverClassName = _a.PopoverClassName, selectionWrapperClassName = _a.selectionWrapperClassName, onSelection = _a.onSelection, onClick = _a.onClick, onCopy = _a.onCopy, disableMultiColorHighlight = _a.disableMultiColorHighlight, onHiglightChange = _a.onHiglightChange;
     var _b = useSelections(), selections = _b.selections, addSelection = _b.addSelection, removeSelection = _b.removeSelection, updateSelection = _b.updateSelection;
     var rootRef = useRef(null);
     var tempRef = useRef(null);
@@ -130,18 +130,19 @@ export var Highlighter = function (_a) {
         onSelection && onSelection(newSelection);
     };
     function manageCopy(selection) {
-        var span = getSpanElement({
-            className: selection.className || defaultSelectionWrapperClassName,
-        });
+        // const span = getSpanElement({
+        //   className: selection.className || defaultSelectionWrapperClassName,
+        // })
         onCopy && onCopy(selection);
     }
     useEffect(function () {
         var sortedSelections = sortByPositionAndOffset(selections);
         if (!rootRef.current)
             return;
-        rootRef.current.innerHTML = '';
+        // rootRef.current.innerHTML = ''
         rootRef.current.innerHTML = htmlString;
         handleHoverAndClickEffects();
+        onHiglightChange && onHiglightChange(rootRef.current.innerHTML);
         if (sortedSelections && sortedSelections.length) {
             for (var i = 0; i < sortedSelections.length; i++) {
                 var item = sortedSelections[i];
@@ -161,6 +162,17 @@ export var Highlighter = function (_a) {
                 }
             }
         }
-    }, [selections, getWrapper, PopoverChildren, htmlString, removeSelection, updateSelection, disableMultiColorHighlight]);
-    return _jsx("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [
+        selections,
+        getWrapper,
+        PopoverChildren,
+        htmlString,
+        removeSelection,
+        updateSelection,
+        disableMultiColorHighlight,
+    ]);
+    var memoizedChildren = useMemo(function () {
+        return _jsx("div", { ref: rootRef, id: 'highlighter-root', onClick: onClick, onMouseUp: handleMouseUp, className: className });
+    }, [onClick, handleMouseUp, className]);
+    return memoizedChildren;
 };

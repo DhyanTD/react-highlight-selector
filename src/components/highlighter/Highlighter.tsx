@@ -1,4 +1,4 @@
-import React, { useRef, MouseEventHandler, useCallback, useEffect } from 'react'
+import React, { useRef, MouseEventHandler, useCallback, useEffect, useMemo } from 'react'
 import ReactDOM from 'react-dom/client'
 import { deserializeRange, serializeRange } from '../../libs/serialize'
 import { generateId } from '../../libs/uid'
@@ -25,7 +25,8 @@ type BaseHighlighterProps = {
   onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void
   onClick?: MouseEventHandler<HTMLDivElement>
   onSelection?: (selection: SelectionType) => void
-  onCopy?: (selection: SelectionType) => void
+  onCopy?: (selection: SelectionType) => void;
+  onHiglightChange?: (htmlString: string) => void
 }
 
 export const Highlighter: React.FC<BaseHighlighterProps> = ({
@@ -42,6 +43,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   onClick,
   onCopy,
   disableMultiColorHighlight,
+  onHiglightChange,
   // selections,
 }) => {
   const { selections, addSelection, removeSelection, updateSelection } = useSelections()
@@ -50,6 +52,76 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   const div = document.createElement('div')
   tempRef.current = div
   tempRef.current.innerHTML = htmlString
+
+
+   const handleHoverAndClickEffects = () => {
+    if (!rootRef.current) return
+    rootRef.current.querySelectorAll('.hover-content-mark').forEach((mark) => {
+      const uniqueId = mark.getAttribute('data-hover-id')
+      const shortHtml = mark.getAttribute('data-short-html')
+      const longHtml = mark.getAttribute('data-long-html')
+      if (!uniqueId || (!shortHtml && !longHtml)) return
+
+      const markElement = mark as HTMLElement
+      if (shortHtml && shortHtml.trim() !== '') {
+        const popup = document.createElement('div')
+        popup.className = 'hover-content-popup'
+        popup.innerHTML = shortHtml + (longHtml ? `<button class="view-more">View More</button>` : '')
+        markElement.appendChild(popup)
+
+        let timeout: any
+
+        const showPopup = () => {
+          clearTimeout(timeout)
+
+          popup.style.display = 'block'
+        }
+
+        const hidePopup = () => {
+          timeout = setTimeout(() => {
+            popup.style.display = 'none'
+          }, 100)
+        }
+
+        markElement.addEventListener('mouseenter', showPopup)
+        markElement.addEventListener('mouseleave', hidePopup)
+        popup.addEventListener('mouseenter', showPopup)
+        popup.addEventListener('mouseleave', hidePopup)
+        popup.querySelector('.view-more')?.addEventListener('click', () => {
+          const modal = document.createElement('div')
+          modal.className = 'modal'
+          modal.innerHTML = `
+            <div class="modal-content">
+              <button class="close-button">close</button>
+              ${longHtml}
+            </div>
+          `
+
+          document.body.appendChild(modal)
+          modal.querySelector('.close-button')?.addEventListener('click', () => {
+            document.body.removeChild(modal)
+          })
+        })
+      } else {
+        markElement.addEventListener('click', (event) => {
+          event.preventDefault()
+          const modal = document.createElement('div')
+          modal.className = 'modal'
+          modal.innerHTML = `
+            <div class="modal-content">
+              <button class="close-button">close</button>
+              ${longHtml}
+            </div>
+          `
+          document.body.appendChild(modal)
+
+          modal.querySelector('.close-button')?.addEventListener('click', () => {
+            document.body.removeChild(modal)
+          })
+        })
+      }
+    })
+  }
 
   const getWrapper = useCallback(
     (selection: SelectionType) => {
@@ -82,103 +154,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     [PopoverClassName, disablePopover, onClickHighlight],
   )
 
-  const handleHoverAndClickEffects = () => {
-    if (!rootRef.current) return
-
-    rootRef.current.querySelectorAll('.hover-content-mark').forEach((mark) => {
-      const uniqueId = mark.getAttribute('data-hover-id')
-
-      const shortHtml = mark.getAttribute('data-short-html')
-
-      const longHtml = mark.getAttribute('data-long-html')
-
-      if (!uniqueId || (!shortHtml && !longHtml)) return
-
-      const markElement = mark as HTMLElement
-
-      if (shortHtml && shortHtml.trim() !== '') {
-        const popup = document.createElement('div')
-
-        popup.className = 'hover-content-popup'
-
-        popup.innerHTML = shortHtml + (longHtml ? `<button class="view-more">View More</button>` : '')
-
-        markElement.appendChild(popup)
-
-        let timeout: any
-
-        const showPopup = () => {
-          clearTimeout(timeout)
-
-          popup.style.display = 'block'
-        }
-
-        const hidePopup = () => {
-          timeout = setTimeout(() => {
-            popup.style.display = 'none'
-          }, 100)
-        }
-
-        markElement.addEventListener('mouseenter', showPopup)
-
-        markElement.addEventListener('mouseleave', hidePopup)
-
-        popup.addEventListener('mouseenter', showPopup)
-
-        popup.addEventListener('mouseleave', hidePopup)
-
-        popup.querySelector('.view-more')?.addEventListener('click', () => {
-          const modal = document.createElement('div')
-
-          modal.className = 'modal'
-
-          modal.innerHTML = `
-
-            <div class="modal-content">
-
-              <button class="close-button">close</button>
-
-              ${longHtml}
-
-            </div>
-
-          `
-
-          document.body.appendChild(modal)
-
-          modal.querySelector('.close-button')?.addEventListener('click', () => {
-            document.body.removeChild(modal)
-          })
-        })
-      } else {
-        markElement.addEventListener('click', (event) => {
-          event.preventDefault()
-
-          const modal = document.createElement('div')
-
-          modal.className = 'modal'
-
-          modal.innerHTML = `
-
-            <div class="modal-content">
-
-              <button class="close-button">close</button>
-
-              ${longHtml}
-
-            </div>
-
-          `
-
-          document.body.appendChild(modal)
-
-          modal.querySelector('.close-button')?.addEventListener('click', () => {
-            document.body.removeChild(modal)
-          })
-        })
-      }
-    })
-  }
+ 
 
   const handleMouseUp: MouseEventHandler<HTMLDivElement> = () => {
     // e.stopPropagation()
@@ -220,6 +196,8 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     rootRef.current.innerHTML = htmlString
 
     handleHoverAndClickEffects()
+
+    onHiglightChange && onHiglightChange(rootRef.)
 
     if (sortedSelections && sortedSelections.length) {
       for (let i = 0; i < sortedSelections.length; i++) {
@@ -265,5 +243,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     disableMultiColorHighlight,
   ])
 
+  const memoizedChildren = useMemo(()=> {
   return <div ref={rootRef} id={'highlighter-root'} onClick={onClick} onMouseUp={handleMouseUp} className={className} />
+  }, [ onClick, handleMouseUp, className])
+
+  return memoizedChildren
 }
