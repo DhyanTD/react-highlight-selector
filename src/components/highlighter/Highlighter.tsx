@@ -21,12 +21,75 @@ type BaseHighlighterProps = {
   PopoverChildren?: PopoverChildrentype
   disablePopover?: boolean
   disableMultiColorHighlight?: boolean
-  identifier?: string
+  identifier: string
 
   onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void
   onClick?: MouseEventHandler<HTMLDivElement>
   onSelection?: (selection: SelectionType) => void
   onCopy?: (selection: SelectionType) => void
+}
+
+const extractHighlightsFromHtml = (
+  htmlString: string,
+  identifier: string,
+): { cleanedHtml: string; initialSelections: Record<string, SelectionType[]> } => {
+  const preprocessedHtml = htmlString
+    .replace(/<div([^>]*)(\sid="selection-[^"]+")([^>]*)>/gi, '<span$1$2$3>')
+    .replace(/<\/div>/gi, '</span>')
+
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(preprocessedHtml, 'text/html')
+  const initialSelections: Record<string, SelectionType[]> = {}
+
+  const highlightElements = doc.querySelectorAll('span[id^="selection-"]')
+
+      const data: SelectionType[] = []
+  highlightElements.forEach((el) => {
+    const id = el.getAttribute('id') || `selection-${generateId()}`
+    const className = el.className || defaultSelectionWrapperClassName
+    const text = el.textContent || ''
+    const parent = el.parentElement
+
+    if (parent && text) {
+      const prevSibling = el.previousSibling
+      const nextSibling = el.nextSibling
+      let leadingSpace = ''
+      let trailingSpace = ''
+
+      if (prevSibling?.nodeType === Node.TEXT_NODE) {
+        leadingSpace = prevSibling.textContent?.match(/\s+$/)?.pop() || ''
+        prevSibling.textContent = prevSibling.textContent?.replace(/\s+$/, '') || ''
+      }
+
+      if (nextSibling?.nodeType === Node.TEXT_NODE) {
+        trailingSpace = nextSibling.textContent?.match(/^\s+/)?.pop() || ''
+        nextSibling.textContent = nextSibling.textContent?.replace(/^\s+/, '') || ''
+      }
+
+      const textNode = doc.createTextNode(`${leadingSpace}${text}${trailingSpace}`)
+      parent.replaceChild(textNode, el)
+
+      const range = doc.createRange()
+      range.selectNodeContents(textNode)
+      // const meta = serializeRange(range, parent);
+      const meta = el.getAttribute('data-meta') || serializeRange(range, parent)
+      data.push({
+        id,
+        text,
+        className,
+        meta,
+        startContainerText: text,
+        endContainerText: text,
+      })
+    }
+  })
+  initialSelections[identifier] = data
+  const cleanedHtml = doc.body.innerHTML.trim()
+  // const cleanedHtml =  `<div>` +doc.body.innerHTML.trim() + `</div>`;
+  console.log(doc.body.innerHTML, 'doc.body.innerHTML cleanedHtml', identifier, initialSelections)
+  // const cleanedHtml = `<div><p>hhhhh</p><p>question 101</p> question</div>`
+
+  return { cleanedHtml, initialSelections }
 }
 
 export const Highlighter: React.FC<BaseHighlighterProps> = ({
@@ -46,12 +109,35 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   identifier,
   // selections,
 }) => {
-  const { selections, addSelection, removeSelection, updateSelection } = useSelections()
+  console.log(htmlString, 'removal string cleandHtml')
+  const { cleanedHtml, initialSelections } = useMemo(
+    () => extractHighlightsFromHtml(htmlString, identifier),
+    [htmlString],
+  )
+  const { selections, setSelections, addSelection, removeSelection, updateSelection } = useSelections()
+  // const rootRef = useRef<HTMLDivElement | null>(null)
+  // const tempRef = useRef<HTMLDivElement | null>(null)
+  // const div = document.createElement('div')
+  // tempRef.current = div
+  // tempRef.current.innerHTML = htmlString
+  useEffect(() => {
+    console.log('cleanedHtml comming here0', initialSelections, selections, cleanedHtml)
+    if (
+      (!selections[identifier] || selections[identifier]?.length === 0) &&
+      initialSelections[identifier]?.length > 0
+    ) {
+      console.log('cleanedHtml comming here1', initialSelections)
+      setSelections(initialSelections)
+    }
+  }, [initialSelections])
+
   const rootRef = useRef<HTMLDivElement | null>(null)
   const tempRef = useRef<HTMLDivElement | null>(null)
   const div = document.createElement('div')
   tempRef.current = div
-  tempRef.current.innerHTML = htmlString
+  tempRef.current.innerHTML = cleanedHtml
+
+  console.log(cleanedHtml, 'cleanedHtml', selections, 'initialSelections', initialSelections)
 
   const handleHoverAndClickEffects = () => {
     if (!rootRef.current) return
@@ -125,7 +211,8 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
   const getWrapper = useCallback(
     (selection: SelectionType) => {
       const span = getSpanElement({
-        className: selection.className || defaultSelectionWrapperClassName,
+        className: selection?.className || defaultSelectionWrapperClassName,
+        meta: selection?.meta || '',
       })
       if (!disablePopover) {
         const popover = getPopoverElement({ className: PopoverClassName })
@@ -161,8 +248,8 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     if (!minSelectionLength) {
       minSelectionLength = defaultMinSelectionLength
     }
-    if (minSelectionLength && selection.toString().length < minSelectionLength) return
-    if (maxSelectionLength && selection.toString().length > maxSelectionLength) return
+    if (minSelectionLength && selection?.toString().length < minSelectionLength) return
+    if (maxSelectionLength && selection?.toString().length > maxSelectionLength) return
     const range = selection.getRangeAt(0)
     if (!isHighlightable(range)) return
     const expRange = getOriginalRange(range, tempRef.current!)
@@ -170,15 +257,17 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     const { startContainerText, endContainerText } = getRangeStartEndContainerText(range)
     const newSelection: SelectionType = {
       meta: serializeRange(expRange, tempRef.current!),
-      text: range.toString(),
+      text: range?.toString(),
       id: `selection-${generateId()}`,
       className: selectionWrapperClassName || defaultSelectionWrapperClassName,
       startContainerText,
       endContainerText,
     }
 
-    addSelection(newSelection)
+    addSelection(newSelection, identifier)
     onSelection && onSelection(newSelection)
+
+    console.log('cleanedHtml selection --?/p', selections)
   }
   function manageCopy(selection: SelectionType) {
     // const span = getSpanElement({
@@ -187,14 +276,15 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     onCopy && onCopy(selection)
   }
   useEffect(() => {
-    const sortedSelections = sortByPositionAndOffset(selections)
+    const sortedSelections = sortByPositionAndOffset(selections[identifier])
     if (!rootRef.current) return
     rootRef.current.innerHTML = ''
-    rootRef.current.innerHTML = htmlString
+    // rootRef.current.innerHTML = htmlString
+    rootRef.current.innerHTML = cleanedHtml
 
     handleHoverAndClickEffects()
 
-    if (sortedSelections && sortedSelections.length) {
+    if (sortedSelections && sortedSelections?.length) {
       for (let i = 0; i < sortedSelections.length; i++) {
         const item = sortedSelections[i] as SelectionType
         const range = deserializeRange(item.meta, rootRef.current!)
@@ -212,8 +302,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
               selection={item}
               removeSelection={removeSelection}
               updateSelection={updateSelection}
-              handleCopy={(selection) => manageCopy(selection)}
+              handleCopy={(selection) => manageCopy(selection[identifier])}
               disableMultiColorHighlight={disableMultiColorHighlight}
+              identifier={identifier}
             />,
           )
         } else {
@@ -222,8 +313,9 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
               removeSelection={removeSelection}
               selection={item}
               updateSelection={updateSelection}
-              handleCopy={(selection) => manageCopy(selection)}
+              handleCopy={(selection) => manageCopy(selection[identifier])}
               disableMultiColorHighlight={disableMultiColorHighlight}
+              identifier={identifier}
             />,
           )
         }
@@ -233,10 +325,12 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     selections,
     getWrapper,
     PopoverChildren,
-    htmlString,
+    // htmlString,
+    cleanedHtml,
     removeSelection,
     updateSelection,
     disableMultiColorHighlight,
+    identifier,
   ])
 
   const memoizedChildren = useMemo(() => {
@@ -249,7 +343,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
         className={className}
       />
     )
-  }, [onClick, handleMouseUp, className])
+  }, [onClick, handleMouseUp, className, identifier])
 
   return memoizedChildren
 }

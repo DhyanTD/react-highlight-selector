@@ -2,8 +2,8 @@ import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { SelectionType } from '../types';
 export declare const SelectionsContext: React.Context<{
-    selections: SelectionType[];
-    setSelections: Dispatch<SetStateAction<SelectionType[]>>;
+    selections: Record<string, SelectionType[]>;
+    setSelections: Dispatch<SetStateAction<Record<string, SelectionType[]>>>;
 } | null>;
 type SelectionProviderType = {
     children: React.ReactNode;

@@ -1,12 +1,17 @@
-export const getSpanElement = ({ className }: { className?: string }) => {
+export const getSpanElement = ({ className, meta }: { className?: string , meta?: string}) => {
   const span = document.createElement('div')
   if (className) {
     span.className = className
+  }
+  if (meta) {
+    span.setAttribute('data-meta', meta);
   }
   return span
 }
 export const getPopoverElement = ({ className }: { className?: string }) => {
   const popover = document.createElement('div')
+
+  
 
   if (!className) {
     popover.setAttribute(

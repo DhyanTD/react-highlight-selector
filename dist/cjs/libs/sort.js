@@ -20,7 +20,7 @@ function extractNumbers(str) {
 }
 var sortByPositionAndOffset = function (slections) {
     // alert('working')
-    return slections.sort(function (a, b) {
+    return slections === null || slections === void 0 ? void 0 : slections.sort(function (a, b) {
         var path1 = JSON.parse(a.meta);
         var path2 = JSON.parse(b.meta);
         var path1Weight = extractNumbers(path1.start) * 10000 + path1.startOffset;

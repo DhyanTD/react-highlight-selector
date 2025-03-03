@@ -20,7 +20,7 @@ function extractNumbers(str: string) {
 
 export const sortByPositionAndOffset = (slections: SelectionType[]) => {
   // alert('working')
-  return slections.sort((a, b) => {
+  return slections?.sort((a, b) => {
     const path1 = JSON.parse(a.meta) as XpathType
     const path2 = JSON.parse(b.meta) as XpathType
 

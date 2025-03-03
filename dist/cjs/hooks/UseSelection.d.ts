@@ -1,8 +1,8 @@
 import { SelectionType } from '../types';
 export declare const useSelections: () => {
-    selections: SelectionType[];
-    setSelections: import("react").Dispatch<import("react").SetStateAction<SelectionType[]>>;
-    addSelection: (selection: SelectionType) => Promise<void>;
-    updateSelection: (id: string, updatedSelection: SelectionType) => Promise<void>;
-    removeSelection: (selection: SelectionType) => void;
+    selections: Record<string, SelectionType[]>;
+    setSelections: import("react").Dispatch<import("react").SetStateAction<Record<string, SelectionType[]>>>;
+    addSelection: (selection: SelectionType, identifier: string) => Promise<void>;
+    updateSelection: (id: string, updatedSelection: SelectionType, identifier: string) => Promise<void>;
+    removeSelection: (selection: SelectionType, identifier: string) => void;
 };

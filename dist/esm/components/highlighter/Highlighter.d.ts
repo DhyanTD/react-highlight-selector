@@ -10,12 +10,11 @@ type BaseHighlighterProps = {
     PopoverChildren?: PopoverChildrentype;
     disablePopover?: boolean;
     disableMultiColorHighlight?: boolean;
-    identifier?: string;
+    identifier: string;
     onClickHighlight?: (selection: SelectionType, event: MouseEvent) => void;
     onClick?: MouseEventHandler<HTMLDivElement>;
     onSelection?: (selection: SelectionType) => void;
     onCopy?: (selection: SelectionType) => void;
-    onHiglightChange?: (htmlString: string) => void;
 };
 export declare const Highlighter: React.FC<BaseHighlighterProps>;
 export {};

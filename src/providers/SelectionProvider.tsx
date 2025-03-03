@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, createContext, useState } from 'react'
 import { SelectionType } from '../types'
 
 export const SelectionsContext = createContext<{
-  selections: SelectionType[]
-  setSelections: Dispatch<SetStateAction<SelectionType[]>>
+  selections: Record<string, SelectionType[]>
+  setSelections: Dispatch<SetStateAction<Record<string, SelectionType[]>>>
 } | null>(null)
 
 type SelectionProviderType = {
@@ -13,7 +13,7 @@ type SelectionProviderType = {
 }
 
 export const SelectionProvider = ({ children }: SelectionProviderType) => {
-  const [selections, setSelections] = useState<SelectionType[]>([])
+  const [selections, setSelections] = useState<Record<string, SelectionType[]>>({})
   const value = { selections, setSelections }
   return <SelectionsContext.Provider value={value}>{children}</SelectionsContext.Provider>
 }

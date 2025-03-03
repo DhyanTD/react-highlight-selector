@@ -9,36 +9,71 @@ export const useSelections = () => {
   }
   const { selections, setSelections } = selectionContext
 
-  const addSelection = async (selection: SelectionType) => {
+  const addSelection = async (selection: SelectionType, identifier: string) => {
     setSelections((prev) => {
-      const index = prev.findIndex((item) => item.id === selection.id)
+      const idInPrev = prev[identifier] ?? []
+      const index = idInPrev?.findIndex((item) => item.id === selection.id)
+      console.log(idInPrev, "cleanedHtml---------------", index);
       if (index === -1) {
-        return [...prev, selection]
+        return { ...prev, [identifier]: [...idInPrev, selection] }
       }
-
       return prev
     })
+    console.log(selection,"cleanedHtml---------------", identifier)
   }
-  const updateSelection = async (id: string, updatedSelection: SelectionType) => {
+
+  // const addSelection = async (selection: SelectionType) => {
+  //   setSelections((prev) => {
+  //     const index = prev.findIndex((item) => item.id === selection.id)
+  //     if (index === -1) {
+  //       return [...prev, selection]
+  //     }
+
+  //     return prev
+  //   })
+  // }
+  // const updateSelection = async (id: string, updatedSelection: SelectionType) => {
+  //   setSelections((prev) => {
+  //     const index = prev.findIndex((item) => item.id === id)
+
+  //     if (index !== -1) {
+  //       prev.splice(index, 1)
+  //     }
+  //     return [...prev, updatedSelection]
+  //   })
+  // }
+
+  const updateSelection = async (id: string, updatedSelection: SelectionType, identifier: string) => {
     setSelections((prev) => {
-      const index = prev.findIndex((item) => item.id === id)
+      const idInPrev = prev[identifier] ?? []
+      const index = idInPrev?.findIndex((item) => item.id === id)
 
       if (index !== -1) {
-        prev.splice(index, 1)
+        idInPrev.splice(index, 1)
       }
-      return [...prev, updatedSelection]
+      return { ...prev, [identifier]: [...idInPrev, updatedSelection] }
     })
   }
-  const removeSelection = (selection: SelectionType) => {
-    setSelections((prev) => {
-      const index = prev.findIndex((item) => item.id === selection.id)
+  // const removeSelection = (selection: SelectionType) => {
+  //   console.log('Removing selection:', selection.id, selection);
+  //   setSelections((prev) => {
+  //     const newSelections = prev.filter((item) => item.id !== selection.id);
+  //     console.log('New selections after removal:', newSelections);
+  //     return newSelections;
+  //   });
+  // }
 
-      if (index !== -1) {
-        prev = prev.filter((item) => item.id !== selection.id)
-      }
-      return [...prev]
-    })
+  const removeSelection = (selection: SelectionType, identifier: string) => {
+    console.log('Removing selection:', selection.id, selection);
+    setSelections((prev) => {
+      const idInPrev = prev[identifier] ?? []
+      const newSelections = idInPrev?.filter((item) => item.id !== selection.id);
+      console.log('New selections after removal:', newSelections);
+      return { ...prev, [identifier]: newSelections };
+    });
   }
+
+  console.log(selections, "removal selection selection")
 
   return {
     selections,

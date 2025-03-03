@@ -2,19 +2,19 @@ import { __assign } from "tslib";
 import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { defaultSelectionWrapperClassName } from '../constants/constants';
 var DefaultPopover = function (_a) {
-    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, disableMultiColorHighlight = _a.disableMultiColorHighlight, handleCopy = _a.handleCopy;
+    var selection = _a.selection, removeSelection = _a.removeSelection, updateSelection = _a.updateSelection, disableMultiColorHighlight = _a.disableMultiColorHighlight, handleCopy = _a.handleCopy, identifier = _a.identifier;
     var handleDelete = function () {
-        removeSelection(selection);
+        removeSelection(selection[identifier], identifier);
     };
     var changeColor = function (colorClassName) {
-        var classes = selection.className || defaultSelectionWrapperClassName;
+        var classes = selection[identifier].className || defaultSelectionWrapperClassName;
         var classArr = classes.split(' ');
         var colorIndex = classArr.findIndex(function (item) { return item.startsWith('bg-'); });
         if (colorIndex !== -1) {
             classArr.splice(colorIndex, 1);
         }
         classArr.push(colorClassName);
-        updateSelection(selection.id, __assign(__assign({}, selection), { className: classArr.join(' ') }));
+        updateSelection(selection[identifier].id, __assign(__assign({}, selection[identifier]), { className: classArr.join(' ') }), identifier);
     };
     return (_jsxs("div", { style: {
             padding: '1rem',
@@ -55,7 +55,7 @@ var DefaultPopover = function (_a) {
                             fontWeight: 'bold',
                         }, children: [' ', "\uD83D\uDDD1"] }), handleCopy && (_jsxs("div", { onClick: function (e) {
                             e.stopPropagation();
-                            handleCopy(selection);
+                            handleCopy(selection[identifier], identifier);
                         }, style: { color: 'black', cursor: 'pointer', fontSize: 16 }, children: [' ', "copy"] }))] })] }));
 };
 export default DefaultPopover;

@@ -1,8 +1,11 @@
 export var getSpanElement = function (_a) {
-    var className = _a.className;
+    var className = _a.className, meta = _a.meta;
     var span = document.createElement('div');
     if (className) {
         span.className = className;
+    }
+    if (meta) {
+        span.setAttribute('data-meta', meta);
     }
     return span;
 };
