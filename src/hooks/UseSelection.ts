@@ -13,13 +13,13 @@ export const useSelections = () => {
     setSelections((prev) => {
       const idInPrev = prev[identifier] ?? []
       const index = idInPrev?.findIndex((item) => item.id === selection.id)
-      console.log(idInPrev, "cleanedHtml---------------", index);
+      console.log(idInPrev, 'cleanedHtml---------------', index)
       if (index === -1) {
         return { ...prev, [identifier]: [...idInPrev, selection] }
       }
       return prev
     })
-    console.log(selection,"cleanedHtml---------------", identifier)
+    console.log(selection, 'cleanedHtml---------------', identifier)
   }
 
   // const addSelection = async (selection: SelectionType) => {
@@ -44,6 +44,7 @@ export const useSelections = () => {
   // }
 
   const updateSelection = async (id: string, updatedSelection: SelectionType, identifier: string) => {
+    console.log(id, updatedSelection, identifier, 'updating selection')
     setSelections((prev) => {
       const idInPrev = prev[identifier] ?? []
       const index = idInPrev?.findIndex((item) => item.id === id)
@@ -64,16 +65,16 @@ export const useSelections = () => {
   // }
 
   const removeSelection = (selection: SelectionType, identifier: string) => {
-    console.log('Removing selection:', selection.id, selection);
+    console.log('Removing selection:', selection?.id, selection)
     setSelections((prev) => {
       const idInPrev = prev[identifier] ?? []
-      const newSelections = idInPrev?.filter((item) => item.id !== selection.id);
-      console.log('New selections after removal:', newSelections);
-      return { ...prev, [identifier]: newSelections };
-    });
+      const newSelections = idInPrev?.filter((item) => item.id !== selection?.id)
+      console.log('New selections after removal:', newSelections)
+      return { ...prev, [identifier]: newSelections }
+    })
   }
 
-  console.log(selections, "removal selection selection")
+  console.log(selections, 'removal selection selection')
 
   return {
     selections,

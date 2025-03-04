@@ -43,7 +43,7 @@ const extractHighlightsFromHtml = (
 
   const highlightElements = doc.querySelectorAll('span[id^="selection-"]')
 
-      const data: SelectionType[] = []
+  const data: SelectionType[] = []
   highlightElements.forEach((el) => {
     const id = el.getAttribute('id') || `selection-${generateId()}`
     const className = el.className || defaultSelectionWrapperClassName
@@ -273,6 +273,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     // const span = getSpanElement({
     //   className: selection.className || defaultSelectionWrapperClassName,
     // })
+    console.log(selection, "Coping")
     onCopy && onCopy(selection)
   }
   useEffect(() => {
@@ -302,7 +303,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
               selection={item}
               removeSelection={removeSelection}
               updateSelection={updateSelection}
-              handleCopy={(selection) => manageCopy(selection[identifier])}
+              handleCopy={(selection) => manageCopy(selection)}
               disableMultiColorHighlight={disableMultiColorHighlight}
               identifier={identifier}
             />,
@@ -313,7 +314,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
               removeSelection={removeSelection}
               selection={item}
               updateSelection={updateSelection}
-              handleCopy={(selection) => manageCopy(selection[identifier])}
+              handleCopy={(selection) => manageCopy(selection)}
               disableMultiColorHighlight={disableMultiColorHighlight}
               identifier={identifier}
             />,

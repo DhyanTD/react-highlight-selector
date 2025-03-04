@@ -7,28 +7,32 @@ const DefaultPopover: PopoverChildrentype = ({
   updateSelection,
   disableMultiColorHighlight,
   handleCopy,
-  identifier
+  identifier,
 }) => {
   const handleDelete = () => {
-    removeSelection(selection[identifier], identifier)
+    removeSelection(selection, identifier)
   }
 
   const changeColor = (colorClassName: string) => {
-    const classes = selection[identifier].className || defaultSelectionWrapperClassName
+    const classes = selection.className || defaultSelectionWrapperClassName
     const classArr = classes.split(' ')
-    const colorIndex = classArr.findIndex((item) => item.startsWith('bg-'))
+    const colorIndex = classArr.findIndex((item:any) => item.startsWith('bg-'))
 
     if (colorIndex !== -1) {
       classArr.splice(colorIndex, 1)
     }
     classArr.push(colorClassName)
 
-    updateSelection(selection[identifier].id, {
-      ...selection[identifier],
-      className: classArr.join(' '),
-    },
-    identifier)
+    updateSelection(
+      selection.id,
+      {
+        ...selection,
+        className: classArr.join(' '),
+      },
+      identifier,
+    )
   }
+  console.log(selection, "copy selection_____")
 
   return (
     <div
@@ -110,7 +114,7 @@ const DefaultPopover: PopoverChildrentype = ({
           <div
             onClick={(e) => {
               e.stopPropagation()
-              handleCopy(selection[identifier], identifier)
+              handleCopy(selection)
             }}
             style={{ color: 'black', cursor: 'pointer', fontSize: 16 }}
           >

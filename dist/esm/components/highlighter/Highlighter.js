@@ -203,6 +203,7 @@ export var Highlighter = function (_a) {
         // const span = getSpanElement({
         //   className: selection.className || defaultSelectionWrapperClassName,
         // })
+        console.log(selection, "Coping");
         onCopy && onCopy(selection);
     }
     useEffect(function () {
@@ -226,10 +227,10 @@ export var Highlighter = function (_a) {
                     return;
                 var root = ReactDOM.createRoot(popoverRoot);
                 if (PopoverChildren) {
-                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection[identifier]); }, disableMultiColorHighlight: disableMultiColorHighlight, identifier: identifier }));
+                    root.render(_jsx(PopoverChildren, { selection: item, removeSelection: removeSelection, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection); }, disableMultiColorHighlight: disableMultiColorHighlight, identifier: identifier }));
                 }
                 else {
-                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection[identifier]); }, disableMultiColorHighlight: disableMultiColorHighlight, identifier: identifier }));
+                    root.render(_jsx(DefaultPopover, { removeSelection: removeSelection, selection: item, updateSelection: updateSelection, handleCopy: function (selection) { return manageCopy(selection); }, disableMultiColorHighlight: disableMultiColorHighlight, identifier: identifier }));
                 }
             }
         }

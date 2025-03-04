@@ -14,13 +14,13 @@ export var useSelections = function () {
                 var _b;
                 var idInPrev = (_b = prev[identifier]) !== null && _b !== void 0 ? _b : [];
                 var index = idInPrev === null || idInPrev === void 0 ? void 0 : idInPrev.findIndex(function (item) { return item.id === selection.id; });
-                console.log(idInPrev, "cleanedHtml---------------", index);
+                console.log(idInPrev, 'cleanedHtml---------------', index);
                 if (index === -1) {
                     return __assign(__assign({}, prev), (_a = {}, _a[identifier] = __spreadArray(__spreadArray([], idInPrev, true), [selection], false), _a));
                 }
                 return prev;
             });
-            console.log(selection, "cleanedHtml---------------", identifier);
+            console.log(selection, 'cleanedHtml---------------', identifier);
             return [2 /*return*/];
         });
     }); };
@@ -44,6 +44,7 @@ export var useSelections = function () {
     // }
     var updateSelection = function (id, updatedSelection, identifier) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
+            console.log(id, updatedSelection, identifier, 'updating selection');
             setSelections(function (prev) {
                 var _a;
                 var _b;
@@ -66,17 +67,17 @@ export var useSelections = function () {
     //   });
     // }
     var removeSelection = function (selection, identifier) {
-        console.log('Removing selection:', selection.id, selection);
+        console.log('Removing selection:', selection === null || selection === void 0 ? void 0 : selection.id, selection);
         setSelections(function (prev) {
             var _a;
             var _b;
             var idInPrev = (_b = prev[identifier]) !== null && _b !== void 0 ? _b : [];
-            var newSelections = idInPrev === null || idInPrev === void 0 ? void 0 : idInPrev.filter(function (item) { return item.id !== selection.id; });
+            var newSelections = idInPrev === null || idInPrev === void 0 ? void 0 : idInPrev.filter(function (item) { return item.id !== (selection === null || selection === void 0 ? void 0 : selection.id); });
             console.log('New selections after removal:', newSelections);
             return __assign(__assign({}, prev), (_a = {}, _a[identifier] = newSelections, _a));
         });
     };
-    console.log(selections, "removal selection selection");
+    console.log(selections, 'removal selection selection');
     return {
         selections: selections,
         setSelections: setSelections,
