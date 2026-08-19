@@ -16,7 +16,7 @@ const DefaultPopover: PopoverChildrentype = ({
   const changeColor = (colorClassName: string) => {
     const classes = selection.className || defaultSelectionWrapperClassName
     const classArr = classes.split(' ')
-    const colorIndex = classArr.findIndex((item:any) => item.startsWith('bg-'))
+    const colorIndex = classArr.findIndex((item: any) => item.startsWith('bg-'))
 
     if (colorIndex !== -1) {
       classArr.splice(colorIndex, 1)
@@ -32,7 +32,7 @@ const DefaultPopover: PopoverChildrentype = ({
       identifier,
     )
   }
-  console.log(selection, "copy selection_____")
+  console.log(selection, 'copy selection_____')
 
   return (
     <div

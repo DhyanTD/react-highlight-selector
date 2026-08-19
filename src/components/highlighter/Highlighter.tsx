@@ -273,7 +273,7 @@ export const Highlighter: React.FC<BaseHighlighterProps> = ({
     // const span = getSpanElement({
     //   className: selection.className || defaultSelectionWrapperClassName,
     // })
-    console.log(selection, "Coping")
+    console.log(selection, 'Coping')
     onCopy && onCopy(selection)
   }
   useEffect(() => {

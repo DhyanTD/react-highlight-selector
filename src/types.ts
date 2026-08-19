@@ -9,7 +9,7 @@ export type SelectionType = {
 }
 export type PopoverChildrentype = React.FC<{
   handleCopy?: (selection: SelectionType) => void
-  selection:  SelectionType
+  selection: SelectionType
   removeSelection: (slection: SelectionType, identifier: string) => void
   updateSelection: (id: string, updatedSelection: SelectionType, identifier: string) => void
   disableMultiColorHighlight?: boolean
